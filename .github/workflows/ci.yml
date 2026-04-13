@@ -13,9 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Run a simple command
-        run: echo "wow the pipeline is working"
+      - name: setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-      - name: Run python Code
+      - name: install dependencies
+        run: pip install -r requirement.txt
+
+      - name: run app
         run: python app.py
+
+      - name: run tests
+        run: pytest
+       
+
+      
   
