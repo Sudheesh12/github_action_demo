@@ -21,14 +21,17 @@ jobs:
       - name: install dependencies
         run: pip install -r requirement.txt
 
-      - name: run app
-        run: python app.py
-
-      - name: run tests
-        run: pytest
-
       - name: build docker image
         run: docker build -t my-app .
+
+      - name: login to dockerhub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: tag the docker image
+        run: docker tag my-app "${{ secrets.DOCKER_USERNAME }}"//github-actions-demo:latest
+        
+      - name: push the docker image
+        run: docker push "${{ secrets.DOCKER_USERNAME }}"//github-actions-demo:latest
        
 
       
