@@ -38,8 +38,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          post: 22
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull "${{ secrets.DOCKER_USERNAME }}"/github-actions-demo:latest
             docker stop my-app || true
