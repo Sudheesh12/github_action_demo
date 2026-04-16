@@ -32,6 +32,19 @@ jobs:
         
       - name: push the docker image
         run: docker push "${{ secrets.DOCKER_USERNAME }}"/github-actions-demo:latest
+
+      - name: deploy the image in the SSH host
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          post: 22
+          script: |
+            docker pull "${{ secrets.DOCKER_USERNAME }}"/github-actions-demo:latest
+            docker stop my-app || true
+            docker rm my-app || true
+            docker run -d -p 80:80 my-app "${{ secrets.DOCKER_USERNAME }}"/github-actions-demo:latest
        
 
       
